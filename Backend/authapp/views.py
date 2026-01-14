@@ -38,8 +38,8 @@ def generate_tokens(user):
 # ................................................... COOKIE CONFIG .............................................
 COOKIE_SETTINGS = {
     "httponly": True,
-    "secure": False,       
-    "samesite": "Lax",     
+    "secure": True,       
+    "samesite": "None",     
     "path": "/",
 }
 
