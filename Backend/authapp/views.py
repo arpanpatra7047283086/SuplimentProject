@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .authentication import CookieJWTAuthentication
 from .models import UserProfile
 import cloudinary
+from django.views.decorators.csrf import csrf_exempt
 
 # .............................................. CLOUDINARY ...................................................
 cloudinary.config(
@@ -85,6 +86,7 @@ def signup(request):
     return response
 
 # ........................................................... LOGIN ........................................................
+@csrf_exempt
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def login_user(request):

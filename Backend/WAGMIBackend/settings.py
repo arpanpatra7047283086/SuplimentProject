@@ -20,10 +20,11 @@ DEBUG = False   # ✅ MUST be False on Render
 
 ALLOWED_HOSTS = [
     "suplimentproject.onrender.com",
-    " https://supliment-project.vercel.app",
+    "supliment-project.vercel.app",
     "localhost",
     "127.0.0.1",
 ]
+
 
 # ======================
 # APPLICATIONS
