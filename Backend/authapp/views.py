@@ -1,4 +1,5 @@
 import os
+from django.http import JsonResponse
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
@@ -16,6 +17,15 @@ cloudinary.config(
     api_secret=os.getenv("api_secret"),
     secure=True,
 )
+
+
+# .................................................. Server WakeUp .............................................
+def wake_up(request):
+    print('WakeUp Server.....')
+    return JsonResponse({"status": "backend awake"})
+
+
+
 
 # ................................................. TOKEN GENERATOR ......................................................
 def generate_tokens(user):

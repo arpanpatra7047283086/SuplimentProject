@@ -14,11 +14,11 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
+    path('wake-up/', views.wake_up, name='wake_up'),
     path('signup/', views.signup, name="signup"),
     path('login/', views.login_user, name="login_user"),
     path('admin-login/', views.admin_login, name='admin_login'),
     path('me/', views.current_user, name='current_user'), 
     path('logout/', views.logout, name='logout'),
     path('token/refresh/', views.token_refresh, name='token_refresh'), 
-
 ]

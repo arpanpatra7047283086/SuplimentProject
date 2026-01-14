@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { HeroBanner } from "@/components/hero-banner"
@@ -5,7 +8,17 @@ import { CategoryBar } from "@/components/category-bar"
 import { ProductGrid } from "@/components/product-grid"
 import { OffersBanner } from "@/components/offers-banner"
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL;
+
+
 export default function HomePage() {
+
+  useEffect(() => {
+    fetch(`${API_BASE}/api/wake-up/`)
+      .then(() => console.log("Backend wake-up call sent"))
+      .catch(() => console.log("Backend sleeping... waking up"));
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -18,7 +31,9 @@ export default function HomePage() {
           <ProductGrid title="Featured Products" shuffle={true} limit={10} />
 
           <section className="py-8">
-            <h2 className="text-2xl font-bold text-foreground mb-6">Shop by Category</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-6">
+              Shop by Category
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {["Whey Protein", "Pre Workout", "Mass Gainer"].map((cat) => (
                 <a
