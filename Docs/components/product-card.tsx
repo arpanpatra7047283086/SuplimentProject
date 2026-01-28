@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/context/cart-context"
-import type { Product } from "@/context/product-context"
+import type { Product } from "@/app/types/product"
 import { useToast } from "@/hooks/use-toast"
 
 interface ProductCardProps {
@@ -57,7 +57,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
           <div className="p-4">
             <p className="text-xs text-muted-foreground mb-1">{product.brand}</p>
-            <h3 className="font-semibold text-foreground text-sm line-clamp-2 mb-2 min-h-[2.5rem]">{product.name}</h3>
+            <h3 className="font-semibold text-foreground text-sm line-clamp-2 mb-2 min-h-10">{product.name}</h3>
             <div className="flex items-center gap-1 mb-2">
               <div className="flex items-center gap-0.5 bg-success/20 text-success px-1.5 py-0.5 rounded text-xs">
                 <span>{product.rating}</span>

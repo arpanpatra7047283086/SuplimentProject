@@ -109,7 +109,7 @@ export default function CategoryPage() {
                 )}
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[280px]">
+            <SheetContent side="left" className="w-70">
               <SheetHeader>
                 <SheetTitle>Filters</SheetTitle>
               </SheetHeader>

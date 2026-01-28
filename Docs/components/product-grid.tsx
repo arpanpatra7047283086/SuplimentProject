@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState, useRef } from "react"
 import { ProductCard } from "./product-card"
 import { useProducts } from "@/context/product-context"
 import type { Product } from "@/app/types/product"
@@ -13,15 +13,20 @@ interface ProductGridProps {
   selectedBrands?: string[]
 }
 
+const EMPTY_BRANDS: string[] = []
+
 export function ProductGrid({
   category,
   limit,
   shuffle = false,
   title,
-  selectedBrands = [],
+  selectedBrands,
 }: ProductGridProps) {
   const { products, getProductsByCategory } = useProducts()
   const [displayProducts, setDisplayProducts] = useState<Product[]>([])
+  
+  // Use stable reference for empty array
+  const brands = selectedBrands && selectedBrands.length > 0 ? selectedBrands : EMPTY_BRANDS
 
   // ✅ Server-safe filtering
   const baseProducts = useMemo(() => {
@@ -31,8 +36,8 @@ export function ProductGrid({
       : products || []
 
     // Filter by selected brands
-    if (selectedBrands.length > 0) {
-      items = items.filter((product) => selectedBrands.includes(product.brand))
+    if (brands.length > 0) {
+      items = items.filter((product) => brands.includes(product.brand))
     }
 
     if (limit) {
@@ -40,7 +45,7 @@ export function ProductGrid({
     }
 
     return items
-  }, [products, category, limit, getProductsByCategory, selectedBrands])
+  }, [products, category, limit, getProductsByCategory, brands])
 
   // ✅ Client-only shuffle
   useEffect(() => {
