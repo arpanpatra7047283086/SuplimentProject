@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 export default function ChatSupportPage() {
   const handleWhatsAppChat = () => {
     const message = encodeURIComponent("Hi! I need help with my order/query.")
-    window.open(`https://wa.me/919876543210?text=${message}`, "_blank")
+    window.open(`https://wa.me/919547899170?text=${message}`, "_blank")
   }
 
   return (
@@ -36,7 +36,7 @@ export default function ChatSupportPage() {
               <CardContent className="p-6 text-center">
                 <Phone className="h-8 w-8 text-primary mx-auto mb-3" />
                 <h3 className="font-semibold text-foreground mb-1">Call Us</h3>
-                <p className="text-muted-foreground text-sm">+91 98765 43210</p>
+                <p className="text-muted-foreground text-sm">+91 95478 99170</p>
               </CardContent>
             </Card>
             <Card className="bg-card border-border">

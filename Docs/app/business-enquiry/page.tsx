@@ -40,7 +40,7 @@ City: ${formData.city}
 Message: ${formData.message}
     `)
 
-    window.open(`https://wa.me/919876543210?text=${message}`, "_blank")
+    window.open(`https://wa.me/919547899170?text=${message}`, "_blank")
 
     toast({
       title: "Enquiry Sent",
@@ -157,7 +157,7 @@ Message: ${formData.message}
                     <Phone className="h-5 w-5 text-primary mt-1" />
                     <div>
                       <p className="font-medium text-foreground">Phone</p>
-                      <p className="text-muted-foreground">+91 98765 43210</p>
+                      <p className="text-muted-foreground">+91 95478 99170</p>
                     </div>
                   </div>
                 </CardContent>

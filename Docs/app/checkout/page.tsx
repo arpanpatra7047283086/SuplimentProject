@@ -18,7 +18,7 @@ import { useAuth } from "@/context/auth-context"
 import { useToast } from "@/hooks/use-toast"
 
 // Admin WhatsApp number (change this to your actual number)
-const ADMIN_WHATSAPP = "919876543210"
+const ADMIN_WHATSAPP = "919547899170"
 const ADMIN_UPI_ID = "sssupplement@upi"
 
 export default function CheckoutPage() {

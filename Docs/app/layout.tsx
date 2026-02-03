@@ -21,19 +21,19 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/icon-light-32x32.png",
+        url: "/ss-supplements-logo-rounded.png",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: "/icon-dark-32x32.png",
+        url: "/ss-supplements-logo-rounded.png",
         media: "(prefers-color-scheme: dark)",
       },
       {
-        url: "/icon.svg",
-        type: "image/svg+xml",
+        url: "/ss-supplements-logo-rounded.png",
+        type: "image/png",
       },
     ],
-    apple: "/apple-icon.png",
+    apple: "/ss-supplements-logo-rounded.png",
   },
 }
 
@@ -49,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`font-sans antialiased`}>
         <AuthProvider>
           <ProductProvider>

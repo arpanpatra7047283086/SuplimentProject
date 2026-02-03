@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -11,9 +12,13 @@ export function Footer() {
           {/* Company Info */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">SS</span>
-              </div>
+              <Image
+                src="/ss-supplements-logo.jpeg"
+                alt="SS Supplement logo"
+                width={44}
+                height={44}
+                className="h-11 w-11 rounded-xl object-cover"
+              />
               <div>
                 <h3 className="font-bold text-lg text-foreground">SS Supplement</h3>
                 <p className="text-xs text-muted-foreground">Your Fitness Partner</p>
@@ -113,7 +118,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-primary" />
-                <span className="text-muted-foreground">+91 98765 43210</span>
+                <span className="text-muted-foreground">+91 95478 99170</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" />

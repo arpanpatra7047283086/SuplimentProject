@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { ShoppingCart, User, Menu, X, ChevronDown, Phone, MessageCircle, Gift } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -43,7 +44,7 @@ export function Header() {
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
               <Phone className="h-3 w-3" />
-              +91 98765 43210
+              +91 95478 99170
             </span>
             <span className="hidden md:block">Free Shipping on orders above ₹999</span>
           </div>
@@ -62,9 +63,14 @@ export function Header() {
         <div className="flex items-center justify-between gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xl">SS</span>
-            </div>
+            <Image
+              src="/ss-supplements-logo.jpeg"
+              alt="SS Supplement logo"
+              width={44}
+              height={44}
+              className="h-11 w-11 rounded-xl object-cover"
+              priority
+            />
             <div className="hidden sm:block">
               <h1 className="font-bold text-lg text-foreground">SS Supplement</h1>
               <p className="text-xs text-muted-foreground">Your Fitness Partner</p>
