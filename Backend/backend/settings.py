@@ -37,10 +37,12 @@ INSTALLED_APPS = [
 CSRF_TRUSTED_ORIGINS = [
     "https://supliment-project.vercel.app",
     "https://www.supliment-project.vercel.app",
+    "https://suplimentproject.onrender.com",
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "https://supliment-project.vercel.app",
+    "https://suplimentproject.onrender.com",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
