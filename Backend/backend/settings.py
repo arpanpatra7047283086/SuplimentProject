@@ -34,6 +34,26 @@ INSTALLED_APPS = [
     "accounts",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://supliment-project.vercel.app",
+    "https://www.supliment-project.vercel.app",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://supliment-project.vercel.app",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+CSRF_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SAMESITE = "None"
+
+
+
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",

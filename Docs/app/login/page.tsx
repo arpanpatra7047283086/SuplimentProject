@@ -9,7 +9,13 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useAuth } from "@/context/auth-context"
 import { useToast } from "@/hooks/use-toast"
@@ -17,13 +23,16 @@ import { useToast } from "@/hooks/use-toast"
 export default function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirect = searchParams.get("redirect") || "/" // default redirect after login
-  const refCode = searchParams.get("ref") || ""
 
-  const { login, signup, adminLogin, isAuthenticated } = useAuth() // ✅ use single hook
+  const redirect = searchParams.get("redirect") || "/"
+  const refFromUrl = searchParams.get("ref")
+
+  const { login, signup, adminLogin, isAuthenticated } = useAuth()
   const { toast } = useToast()
 
-  const [activeTab, setActiveTab] = useState(refCode ? "signup" : "login")
+  const [activeTab, setActiveTab] =
+    useState<"login" | "signup" | "admin">("login")
+
   const [showPassword, setShowPassword] = useState(false)
 
   const [loginLoading, setLoginLoading] = useState(false)
@@ -32,16 +41,43 @@ export default function LoginPage() {
 
   const [loginData, setLoginData] = useState({ phone: "", password: "" })
   const [adminData, setAdminData] = useState({ phone: "", password: "" })
+
   const [signupData, setSignupData] = useState({
     name: "",
     email: "",
     phone: "",
     password: "",
     confirmPassword: "",
-    referralCode: refCode,
+    referralCode: "",
   })
 
-  // ================= LOGIN =================
+  /* ================= SAVE REFERRAL FROM URL ================= */
+  useEffect(() => {
+    if (refFromUrl) {
+      localStorage.setItem("referral_code", refFromUrl)
+    }
+  }, [refFromUrl])
+
+  /* ================= AUTO LOAD REFERRAL ================= */
+  useEffect(() => {
+    const storedRef = localStorage.getItem("referral_code")
+    if (storedRef) {
+      setSignupData((prev) => ({
+        ...prev,
+        referralCode: storedRef,
+      }))
+      setActiveTab("signup")
+    }
+  }, [])
+
+  /* ================= AUTO REDIRECT IF LOGGED IN ================= */
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace(redirect)
+    }
+  }, [isAuthenticated, router, redirect])
+
+  /* ================= LOGIN ================= */
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoginLoading(true)
@@ -50,21 +86,29 @@ export default function LoginPage() {
 
     if (result.success) {
       toast({ title: "Success", description: result.message })
-      router.replace(redirect) // ✅ redirect immediately after login
+      router.replace(redirect)
     } else {
-      toast({ title: "Error", description: result.message, variant: "destructive" })
+      toast({
+        title: "Error",
+        description: result.message,
+        variant: "destructive",
+      })
     }
 
     setLoginLoading(false)
   }
 
-  // ================= SIGNUP =================
+  /* ================= SIGNUP ================= */
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setSignupLoading(true)
 
     if (signupData.password !== signupData.confirmPassword) {
-      toast({ title: "Error", description: "Passwords do not match", variant: "destructive" })
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        variant: "destructive",
+      })
       setSignupLoading(false)
       return
     }
@@ -74,21 +118,29 @@ export default function LoginPage() {
       signupData.email.trim(),
       signupData.phone.trim(),
       signupData.password,
-      signupData.referralCode.trim() || undefined
+      signupData.referralCode || undefined
     )
 
     if (result.success) {
       toast({ title: "Success", description: result.message })
+
+      // ✅ clear referral after success
+      localStorage.removeItem("referral_code")
+
       setActiveTab("login")
       setLoginData({ phone: signupData.phone, password: "" })
     } else {
-      toast({ title: "Error", description: result.message, variant: "destructive" })
+      toast({
+        title: "Error",
+        description: result.message,
+        variant: "destructive",
+      })
     }
 
     setSignupLoading(false)
   }
 
-  // ================= ADMIN LOGIN =================
+  /* ================= ADMIN ================= */
   const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setAdminLoading(true)
@@ -99,18 +151,15 @@ export default function LoginPage() {
       toast({ title: "Success", description: result.message })
       router.replace("/admin")
     } else {
-      toast({ title: "Error", description: result.message, variant: "destructive" })
+      toast({
+        title: "Error",
+        description: result.message,
+        variant: "destructive",
+      })
     }
 
     setAdminLoading(false)
   }
-
-  // ================= AUTO REDIRECT IF ALREADY LOGGED IN =================
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.replace(redirect)
-    }
-  }, [isAuthenticated, router, redirect])
 
   return (
     <div className="min-h-screen bg-background">
@@ -125,7 +174,7 @@ export default function LoginPage() {
               <TabsTrigger value="admin">Admin</TabsTrigger>
             </TabsList>
 
-            {/* ================= LOGIN ================= */}
+            {/* LOGIN */}
             <TabsContent value="login">
               <Card>
                 <CardHeader>
@@ -139,19 +188,29 @@ export default function LoginPage() {
                     <div>
                       <Label>Phone</Label>
                       <Input
-                        type="tel"
                         value={loginData.phone}
-                        onChange={(e) => setLoginData({ ...loginData, phone: e.target.value })}
+                        onChange={(e) =>
+                          setLoginData({
+                            ...loginData,
+                            phone: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
+
                     <div>
                       <Label>Password</Label>
                       <div className="relative">
                         <Input
                           type={showPassword ? "text" : "password"}
                           value={loginData.password}
-                          onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                          onChange={(e) =>
+                            setLoginData({
+                              ...loginData,
+                              password: e.target.value,
+                            })
+                          }
                           required
                         />
                         <button
@@ -163,6 +222,7 @@ export default function LoginPage() {
                         </button>
                       </div>
                     </div>
+
                     <Button className="w-full" disabled={loginLoading}>
                       {loginLoading ? "Logging in..." : "Login"}
                     </Button>
@@ -171,7 +231,7 @@ export default function LoginPage() {
               </Card>
             </TabsContent>
 
-            {/* ================= SIGNUP ================= */}
+            {/* SIGNUP */}
             <TabsContent value="signup">
               <Card>
                 <CardHeader>
@@ -184,42 +244,69 @@ export default function LoginPage() {
                     <Input
                       placeholder="Name"
                       value={signupData.name}
-                      onChange={(e) => setSignupData({ ...signupData, name: e.target.value })}
+                      onChange={(e) =>
+                        setSignupData({
+                          ...signupData,
+                          name: e.target.value,
+                        })
+                      }
                       required
                     />
                     <Input
                       type="email"
                       placeholder="Email"
                       value={signupData.email}
-                      onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
+                      onChange={(e) =>
+                        setSignupData({
+                          ...signupData,
+                          email: e.target.value,
+                        })
+                      }
                       required
                     />
                     <Input
-                      type="tel"
                       placeholder="Phone"
                       value={signupData.phone}
-                      onChange={(e) => setSignupData({ ...signupData, phone: e.target.value })}
+                      onChange={(e) =>
+                        setSignupData({
+                          ...signupData,
+                          phone: e.target.value,
+                        })
+                      }
                       required
                     />
                     <Input
                       type="password"
                       placeholder="Password"
                       value={signupData.password}
-                      onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
+                      onChange={(e) =>
+                        setSignupData({
+                          ...signupData,
+                          password: e.target.value,
+                        })
+                      }
                       required
                     />
                     <Input
                       type="password"
                       placeholder="Confirm Password"
                       value={signupData.confirmPassword}
-                      onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })}
+                      onChange={(e) =>
+                        setSignupData({
+                          ...signupData,
+                          confirmPassword: e.target.value,
+                        })
+                      }
                       required
                     />
+
+                    {/* Referral (auto) */}
                     <Input
-                      placeholder="Referral Code (optional)"
+                      placeholder="Referral Code"
                       value={signupData.referralCode}
-                      onChange={(e) => setSignupData({ ...signupData, referralCode: e.target.value })}
+                      readOnly
                     />
+
                     <Button className="w-full" disabled={signupLoading}>
                       {signupLoading ? "Creating..." : "Create Account"}
                     </Button>
@@ -228,7 +315,7 @@ export default function LoginPage() {
               </Card>
             </TabsContent>
 
-            {/* ================= ADMIN ================= */}
+            {/* ADMIN */}
             <TabsContent value="admin">
               <Card>
                 <CardHeader>
@@ -239,17 +326,26 @@ export default function LoginPage() {
                 <CardContent>
                   <form onSubmit={handleAdminLogin} className="space-y-4">
                     <Input
-                      type="tel"
                       placeholder="Phone"
                       value={adminData.phone}
-                      onChange={(e) => setAdminData({ ...adminData, phone: e.target.value })}
+                      onChange={(e) =>
+                        setAdminData({
+                          ...adminData,
+                          phone: e.target.value,
+                        })
+                      }
                       required
                     />
                     <Input
                       type="password"
                       placeholder="Password"
                       value={adminData.password}
-                      onChange={(e) => setAdminData({ ...adminData, password: e.target.value })}
+                      onChange={(e) =>
+                        setAdminData({
+                          ...adminData,
+                          password: e.target.value,
+                        })
+                      }
                       required
                     />
                     <Button className="w-full" disabled={adminLoading}>
